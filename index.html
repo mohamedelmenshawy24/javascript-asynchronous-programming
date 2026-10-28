@@ -37,7 +37,7 @@
     }
 
     .header-inner, main, footer {
-      width: min(1100px, calc(100% - 32px));
+      width: min(1180px, calc(100% - 40px));
       margin: 0 auto;
     }
 
@@ -97,14 +97,56 @@
       margin-bottom: 9px;
     }
 
+    .section-heading { margin: 26px 0 16px; }
+    .section-heading h2 { font-size: 1.6rem; margin: 2px 0 6px; }
+    .section-heading p { color: var(--muted); margin: 0; }
+    .practice-section { margin-top: 38px; padding-top: 22px; border-top: 2px solid var(--border); }
+    .workflow-panel { margin-top: 22px; padding: 20px; border-left: 4px solid var(--cyan); }
+    .workflow { font-weight: 800; color: var(--navy); font-size: 1.05rem; padding: 10px 12px; background: #eaf9fa; border-radius: 8px; }
+    .workflow span { color: var(--blue); padding: 0 5px; }
+    .applications { padding-left: 22px; }
+    .applications li { margin: 8px 0; }
+
     .demo-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
+      gap: 20px;
+      align-items: start;
     }
 
-    .demo-card { padding: 18px; display: flex; flex-direction: column; }
-    .demo-card p { color: var(--muted); font-size: .95rem; flex: 1; }
+    .demo-card {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      border-top: 4px solid var(--blue);
+    }
+    .demo-card p { color: var(--muted); font-size: 1rem; }
+    .demo-card h3 { font-size: 1.12rem; line-height: 1.35; }
+    .demo-card .code { font-size: .9rem; line-height: 1.65; }
+    .output-label {
+      margin: 14px 0 6px;
+      color: var(--navy);
+      font-size: .88rem;
+      font-weight: 700;
+    }
+    .demo-output {
+      min-height: 78px;
+      max-height: 190px;
+      overflow: auto;
+      margin: 0;
+      padding: 12px 14px;
+      border: 1px solid #203d56;
+      border-radius: 9px;
+      background: #0c1b2a;
+      color: #d8f7f8;
+      font: .9rem/1.65 Consolas, "Courier New", monospace;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    .demo-output:empty::before { content: "Output will appear here."; color: #91a9bb; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .actions button { font-size: .93rem; }
 
     .code {
       background: #0c1b2a;
@@ -117,7 +159,6 @@
       white-space: pre;
     }
 
-    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
 
     button {
       appearance: none;
@@ -139,6 +180,9 @@
     .clear { background: #e8eef4; color: var(--navy); border: 1px solid var(--border); }
 
     .console-panel { margin-top: 22px; overflow: hidden; }
+    .example-output { margin: 2px 0 14px; border: 1px solid #d7e1eb; border-radius: 9px; overflow: hidden; }
+    .output-label { padding: 7px 11px; background: #eaf1f7; color: var(--navy); font-size: .8rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; border-bottom: 1px solid var(--border); }
+    .example-output pre { min-height: 74px; max-height: 210px; overflow: auto; margin: 0; padding: 11px 12px; background: #0c1b2a; color: #d8f7f8; font: .88rem/1.65 Consolas, "Courier New", monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
     .console-head {
       display: flex;
       align-items: center;
@@ -175,6 +219,9 @@
     @media (max-width: 760px) {
       .intro, .demo-grid { grid-template-columns: 1fr; }
       header { padding-top: 26px; }
+      .demo-card { padding: 16px; }
+      .code { font-size: .8rem; }
+      main { padding-top: 18px; }
     }
   </style>
 </head>
@@ -201,15 +248,21 @@
       </div>
       <div class="panel">
         <h2>How to use this page</h2>
-        <p>Select one example at a time. Its output appears in the console-style panel below.</p>
-        <p class="notice">Network examples require an internet connection. Clear the output before the next demonstration to keep the result easy to follow.</p>
+        <p>Start with the five demonstrations in slide order. The additional practice activities appear below them, and every example has its own output directly beneath the code.</p>
+        <p class="notice">API examples require an internet connection. Run one example at a time to keep the output clear.</p>
       </div>
     </section>
 
-    <section class="demo-grid" aria-label="Interactive JavaScript examples">
-      <article class="demo-card">
-        <span class="tag">Example 1</span>
-        <h3>Asynchronous execution: <code>setTimeout()</code></h3>
+    <section aria-labelledby="lesson-demos-title">
+      <div class="section-heading">
+        
+        <h2 id="lesson-demos-title">Examples in Slide Order</h2>
+        <p>Follow the same sequence as the presentation. Each output appears immediately below its code.</p>
+      </div>
+      <div class="demo-grid" aria-label="Main lesson demonstrations">
+<article class="demo-card">
+        <span class="tag">Slide Demo 1</span>
+        <h3>How <code>setTimeout()</code> Demonstrates Asynchronous Execution</h3>
         <p>The timer callback runs later, so the next synchronous statement appears first.</p>
         <pre class="code">console.log("1. Request started");
 
@@ -218,26 +271,19 @@ setTimeout(() => {
 }, 1000);
 
 console.log("3. App continues");</pre>
+        <div class="example-output" aria-label="Example 1 output">
+          <div class="output-label">Output</div>
+          <pre id="output-1" aria-live="polite">Run this example to see the output.</pre>
+        </div>
         <div class="actions">
-          <button type="button" onclick="runExample(1)">Run Example 1</button>
+          <button type="button" onclick="runExample(1)">Run demonstration</button>
+          <button class="clear" type="button" onclick="clearOutput(1)">Clear</button>
         </div>
       </article>
 
-      <article class="demo-card">
-        <span class="tag">Example 2</span>
-        <h3>Synchronous blocking: <code>alert()</code></h3>
-        <p>The alert dialog pauses normal JavaScript execution until you dismiss it.</p>
-        <pre class="code">console.log("1. Request started");
-alert("2. Announcement received");
-console.log("3. App continues");</pre>
-        <div class="actions">
-          <button type="button" onclick="runExample(2)">Run Example 2</button>
-        </div>
-      </article>
-
-      <article class="demo-card">
-        <span class="tag">Example 3</span>
-        <h3>Fetch with a Promise and <code>.then()</code></h3>
+<article class="demo-card">
+        <span class="tag">Slide Demo 2</span>
+        <h3>Handling Asynchronous Results with Promises</h3>
         <p>Register a callback for the HTTP response while JavaScript continues with other work.</p>
         <pre class="code">console.log("1. Request started");
 
@@ -247,13 +293,129 @@ request.then((response) => {
 });
 
 console.log("3. App continues");</pre>
+        <div class="example-output" aria-label="Example 2 output">
+          <div class="output-label">Output</div>
+          <pre id="output-2" aria-live="polite">Run this example to see the output.</pre>
+        </div>
         <div class="actions">
-          <button type="button" onclick="runExample(3)">Run Example 3</button>
+          <button type="button" onclick="runExample(2)">Run demonstration</button>
+          <button class="clear" type="button" onclick="clearOutput(2)">Clear</button>
         </div>
       </article>
 
-      <article class="demo-card">
-        <span class="tag">Example 4</span>
+<article class="demo-card">
+        <span class="tag">Slide Demo 3</span>
+        <h3>Make Asynchronous Code Easier to Follow</h3>
+        <p><code>await</code> pauses this async function while the request is pending, not the entire application.</p>
+        <pre class="code">async function loadAnnouncement() {
+  const response = await fetch(API_URL);
+  console.log("Response received");
+}
+
+loadAnnouncement();
+console.log("App continues");</pre>
+        <div class="example-output" aria-label="Example 3 output">
+          <div class="output-label">Output</div>
+          <pre id="output-3" aria-live="polite">Run this example to see the output.</pre>
+        </div>
+        <div class="actions">
+          <button type="button" onclick="runExample(3)">Run demonstration</button>
+          <button class="clear" type="button" onclick="clearOutput(3)">Clear</button>
+        </div>
+      </article>
+
+<article class="demo-card">
+        <span class="tag">Slide Demo 4</span>
+        <h3>From HTTP Response to Usable Data</h3>
+        <p>Parse the response body and display useful properties from the returned post.</p>
+        <pre class="code">async function loadPost() {
+  const response = await fetch(API_URL);
+  const post = await response.json();
+
+  console.log("Title:", post.title);
+  console.log("Body:", post.body);
+}
+
+loadPost();</pre>
+        <div class="example-output" aria-label="Example 4 output">
+          <div class="output-label">Output</div>
+          <pre id="output-4" aria-live="polite">Run this example to see the output.</pre>
+        </div>
+        <div class="actions">
+          <button type="button" onclick="runExample(4)">Run demonstration</button>
+          <button class="clear" type="button" onclick="clearOutput(4)">Clear</button>
+        </div>
+      </article>
+
+<article class="demo-card">
+        <span class="tag">Slide Demo 5</span>
+        <h3>Handling HTTP Errors and Network Failures</h3>
+        <p>Check <code>response.ok</code> because fetch does not reject automatically for HTTP 404 or 500 responses.</p>
+        <pre class="code">async function loadPost(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status}`);
+    }
+
+    const post = await response.json();
+    console.log("Title:", post.title);
+  } catch (error) {
+    console.error("Could not load post:", error.message);
+  }
+}
+
+loadPost(API_URL);</pre>
+        <div class="example-output" aria-label="Example 5 output">
+          <div class="output-label">Output</div>
+          <pre id="output-5" aria-live="polite">Run this example to see the output.</pre>
+        </div>
+
+        <div class="actions">
+          <button type="button" onclick="runExample(5)">Run success case</button>
+          <button type="button" class="secondary" onclick="runExample('5-error')">Test HTTP 404</button>
+          <button class="clear" type="button" onclick="clearOutput(5)">Clear</button>
+        </div>
+      </article>
+      </div>
+      <div class="panel workflow-panel">
+        <h3>One reusable workflow across applications</h3>
+        <p class="workflow">Request data <span>→</span> Process and display results <span>→</span> Handle errors</p>
+        <ul class="applications">
+          <li><strong>Course registration:</strong> Retrieve courses and sections → Display available courses and times → Handle loading errors.</li>
+          <li><strong>Online shopping:</strong> Load products and prices → Display products and calculate totals → Handle data errors.</li>
+          <li><strong>Weather applications:</strong> Retrieve forecasts → Display weather conditions → Handle loading errors.</li>
+        </ul>
+      </div>
+      <p class="hint">Teaching tip: Ask the panel to predict the output before running each demonstration.</p>
+    </section>
+
+    <section aria-labelledby="practice-title" class="practice-section">
+      <div class="section-heading">
+        <span class="tag">Extra activities</span>
+        <h2 id="practice-title">Practice: Explore Further</h2>
+        <p>These additional examples are placed after the main slide demonstrations. Predict the result, run the code, and explain what happens.</p>
+      </div>
+      <div class="demo-grid" aria-label="Practice examples">
+<article class="demo-card">
+        <span class="tag">Practice 1</span>
+        <h3>Synchronous blocking: <code>alert()</code></h3>
+        <p>The alert dialog pauses normal JavaScript execution until you dismiss it.</p>
+        <pre class="code">console.log("1. Request started");
+alert("2. Announcement received");
+console.log("3. App continues");</pre>
+        <div class="example-output" aria-label="Example 6 output">
+          <div class="output-label">Output</div>
+          <pre id="output-6" aria-live="polite">Run this example to see the output.</pre>
+        </div>
+        <div class="actions">
+          <button type="button" onclick="runExample(6)">Run practice</button>
+          <button class="clear" type="button" onclick="clearOutput(6)">Clear</button>
+        </div>
+      </article>
+
+<article class="demo-card">
+        <span class="tag">Practice 2</span>
         <h3>Network failure with <code>.catch()</code></h3>
         <p>An intentionally invalid domain demonstrates how a rejected fetch Promise can be handled.</p>
         <pre class="code">fetch(INVALID_URL)
@@ -263,13 +425,18 @@ console.log("3. App continues");</pre>
   .catch((error) => {
     console.error("Request failed:", error.message);
   });</pre>
+        <div class="example-output" aria-label="Example 7 output">
+          <div class="output-label">Output</div>
+          <pre id="output-7" aria-live="polite">Run this example to see the output.</pre>
+        </div>
         <div class="actions">
-          <button type="button" onclick="runExample(4)">Run Example 4</button>
+          <button type="button" onclick="runExample(7)">Run practice</button>
+          <button class="clear" type="button" onclick="clearOutput(7)">Clear</button>
         </div>
       </article>
 
-      <article class="demo-card">
-        <span class="tag">Example 5</span>
+<article class="demo-card">
+        <span class="tag">Practice 3</span>
         <h3>Understanding a pending Promise</h3>
         <p>The Promise stays pending while the timer waits, then becomes fulfilled when <code>resolve()</code> runs.</p>
         <pre class="code">const request = new Promise((resolve) => {
@@ -280,70 +447,17 @@ console.log("3. App continues");</pre>
 
 request.then((message) => console.log(message));
 console.log("App continues");</pre>
+        <div class="example-output" aria-label="Example 8 output">
+          <div class="output-label">Output</div>
+          <pre id="output-8" aria-live="polite">Run this example to see the output.</pre>
+        </div>
         <div class="actions">
-          <button type="button" onclick="runExample(5)">Run Example 5</button>
+          <button type="button" onclick="runExample(8)">Run practice</button>
+          <button class="clear" type="button" onclick="clearOutput(8)">Clear</button>
         </div>
       </article>
-
-      <article class="demo-card">
-        <span class="tag">Example 6</span>
-        <h3>Introducing <code>async/await</code></h3>
-        <p><code>await</code> pauses this async function while the request is pending, not the entire application.</p>
-        <pre class="code">async function loadAnnouncement() {
-  const response = await fetch(API_URL);
-  console.log("Response received");
-}
-
-loadAnnouncement();
-console.log("App continues");</pre>
-        <div class="actions">
-          <button type="button" onclick="runExample(6)">Run Example 6</button>
-        </div>
-      </article>
-
-      <article class="demo-card">
-        <span class="tag">Example 7</span>
-        <h3>Parse and display JSON data</h3>
-        <p>Parse the response body and display useful properties from the returned post.</p>
-        <pre class="code">const response = await fetch(API_URL);
-const post = await response.json();
-
-console.log("Title:", post.title);
-console.log("Body:", post.body);</pre>
-        <div class="actions">
-          <button type="button" onclick="runExample(7)">Run Example 7</button>
-        </div>
-      </article>
-
-      <article class="demo-card">
-        <span class="tag">Example 8</span>
-        <h3>HTTP and network error handling</h3>
-        <p>Check <code>response.ok</code> because fetch does not reject automatically for HTTP 404 or 500 responses.</p>
-        <pre class="code">const response = await fetch(API_URL);
-
-if (!response.ok) {
-  throw new Error(`HTTP error: ${response.status}`);
-}
-
-const post = await response.json();</pre>
-        <div class="actions">
-          <button type="button" onclick="runExample(8)">Run success case</button>
-          <button type="button" class="secondary" onclick="runExample('8-error')">Test HTTP 404</button>
-        </div>
-      </article>
-    </section>
-
-    <section class="console-panel" aria-label="Example output">
-      <div class="console-head">
-        <h2>Output console</h2>
-        <div class="actions">
-          <button class="clear" type="button" onclick="clearOutput()">Clear output</button>
-        </div>
       </div>
-      <pre id="output" aria-live="polite">Choose an example above to begin...</pre>
     </section>
-
-    <p class="hint">Tip: Ask students to predict the output order before clicking Run.</p>
   </main>
 
   <footer>
@@ -353,137 +467,118 @@ const post = await response.json();</pre>
   <script>
     const API_URL = "https://jsonplaceholder.typicode.com/posts/1";
     const INVALID_URL = "https://invalid-domain-example-12345.com";
-    const output = document.getElementById("output");
-    let runId = 0;
+    const runIds = {};
 
-    function writeLine(message, kind = "log") {
+    function outputFor(example) {
+      const id = String(example).startsWith("5") ? 5 : Number(example);
+      return document.getElementById("output-" + id);
+    }
+
+    function writeLine(example, message, kind = "log", thisRun = runIds[example]) {
+      if (thisRun !== runIds[example]) return;
+      const output = outputFor(example);
       const prefix = kind === "error" ? "[ERROR] " : "";
-      output.textContent += (output.textContent ? "\n" : "") + prefix + String(message);
+      const current = output.textContent === "Run this example to see the output." ? "" : output.textContent;
+      output.textContent = current + (current ? "\n" : "") + prefix + String(message);
       output.scrollTop = output.scrollHeight;
     }
 
-    function clearOutput() {
-      runId++;
-      output.textContent = "";
+    function clearOutput(example) {
+      const id = Number(example);
+      runIds[id] = (runIds[id] || 0) + 1;
+      const output = document.getElementById("output-" + id);
+      if (output) output.textContent = "Run this example to see the output.";
     }
 
-    function startExample(title) {
-      runId++;
-      output.textContent = "▶ " + title + "\n";
-      return runId;
+    function startExample(id, title) {
+      runIds[id] = (runIds[id] || 0) + 1;
+      const output = document.getElementById("output-" + id);
+      output.textContent = "▶ " + title;
+      return runIds[id];
     }
 
     async function runExample(example) {
-      const thisRun = startExample(
-        typeof example === "string" ? "Example 8 — HTTP 404 test" : "Example " + example
-      );
-      const log = (message, kind) => {
-        if (thisRun === runId) writeLine(message, kind);
-      };
-
+      const id = typeof example === "string" ? 5 : Number(example);
+      const thisRun = startExample(id, typeof example === "string" ? "Demo 5 — HTTP 404 test" : "Example " + id);
+      const log = (message, kind) => writeLine(id, message, kind, thisRun);
       try {
         switch (example) {
           case 1:
-            log("1. Request started");
+            log("1. Task started");
             setTimeout(() => log("2. Announcement received"), 1000);
             log("3. App continues");
             break;
-
-          case 2:
+          case 6:
             log("1. Request started");
             log("Opening a browser alert. Dismiss it to continue.");
             alert("2. Announcement received");
             log("2. Announcement received");
             log("3. App continues");
             break;
-
-          case 3:
+          case 2: {
             log("1. Request started");
-            {
-              const request = fetch(API_URL);
-              request.then((response) => {
-                log("2. Response received (HTTP " + response.status + ")");
-              }).catch((error) => {
-                log("Request failed: " + error.message, "error");
-              });
-              log("3. App continues");
-            }
+            const responsePromise = fetch(API_URL);
+            responsePromise.then((response) => {
+              log("2. Response received");
+            }).catch((error) => log("Request failed: " + error.message, "error"));
+            log("3. App continues");
             break;
-
-          case 4:
+          }
+          case 7: {
             log("1. Request started");
-            {
-              const request = fetch(INVALID_URL);
-              request.then((response) => {
-                log("2. Response received (HTTP " + response.status + ")");
-              }).catch((error) => {
-                log("Request failed: " + error.message, "error");
-              });
-              log("3. App continues");
-            }
+            const responsePromise = fetch(INVALID_URL);
+            responsePromise.then((response) => {
+              log("2. Response received (HTTP " + response.status + ")");
+            }).catch((error) => log("Request failed: " + error.message, "error"));
+            log("3. App continues");
             break;
-
-          case 5:
+          }
+          case 8: {
             log("1. Request started");
-            {
-              const request = new Promise((resolve) => {
-                setTimeout(() => resolve("Announcement received"), 3000);
-              });
-              log("2. Promise state: pending (initial state)");
-              request.then((message) => log("3. " + message));
-              log("4. App continues");
-            }
+            const request = new Promise((resolve) => setTimeout(() => resolve("Announcement received"), 3000));
+            log("2. Promise state: pending (initial state)");
+            request.then((message) => log("3. " + message));
+            log("4. App continues");
             break;
-
-          case 6:
-            log("Starting API request...");
-            {
-              const loadAnnouncement = async () => {
-                const response = await fetch(API_URL);
-                log("Response received (HTTP " + response.status + ")");
-              };
-              const promise = loadAnnouncement();
-              log("App continues while the async function waits");
-              await promise;
-            }
-            break;
-
-          case 7:
-            log("Requesting post data...");
-            {
+          }
+          case 3: {
+            const loadAnnouncement = async () => {
               const response = await fetch(API_URL);
-              if (!response.ok) {
-                throw new Error("HTTP error: " + response.status);
-              }
-              const post = await response.json();
-              log("Title: " + post.title);
-              log("Body: " + post.body);
-            }
+              log("Response received");
+            };
+            const promise = loadAnnouncement();
+            log("App continues");
+            await promise;
             break;
-
-          case 8:
-          case "8-error":
+          }
+          case 4: {
             log("Requesting post data...");
-            {
-              const url = example === "8-error"
-                ? "https://jsonplaceholder.typicode.com/posts/999"
-                : API_URL;
+            const response = await fetch(API_URL);
+            if (!response.ok) throw new Error("HTTP error: " + response.status);
+            const post = await response.json();
+            log("Title: " + post.title);
+            log("Body: " + post.body);
+            break;
+          }
+          case 5:
+          case "5-error": {
+            const url = example === "5-error" ? "https://jsonplaceholder.typicode.com/posts/999" : API_URL;
+            try {
               const response = await fetch(url);
-              log("HTTP status: " + response.status);
               if (!response.ok) {
                 throw new Error("HTTP error: " + response.status);
               }
               const post = await response.json();
               log("Title: " + post.title);
-              log("Request completed successfully.");
+            } catch (error) {
+              log("Could not load post: " + error.message, "error");
             }
             break;
+          }
         }
       } catch (error) {
         log("Could not complete request: " + error.message, "error");
-        if (example === 4) {
-          log("Note: the exact network error depends on the browser and connection.");
-        }
+        if (example === 7) log("Note: the exact network error depends on the browser and connection.");
       }
     }
   </script>
